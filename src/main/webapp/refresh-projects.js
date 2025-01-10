@@ -226,4 +226,20 @@ function disableCtrlURLInput() {
     }
 }
 
-window.addEventListener("load", disableCtrlURLInput);
+window.addEventListener("DOMContentLoaded", () => {
+    disableCtrlURLInput();
+
+    document.querySelector("#refreshButton").addEventListener("click", (event) => {
+        const { url, paramList } = event.target.dataset;
+        refreshTemplateList(url, paramList);
+    });
+});
+
+Behaviour.specify(".fortify-refresh-button", "fortify-refresh-button-behaviour", 0, (button) => {
+    button.addEventListener("click", (event) => {
+        const target = event.target;
+        const { refreshUrl, callback } = target.dataset;
+
+        window[callback](refreshUrl, target);
+    });
+});
